@@ -1,6 +1,5 @@
 #include "parser.h"
 #include <cctype>
-#include <compare>
 #include "../errors.h"
 #include <string_view>
 #include <vector>
