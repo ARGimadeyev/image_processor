@@ -15,20 +15,20 @@ bool IsLetters(std::string_view s) {
     return true;
 }
 
+bool IsFilterToken(std::string_view token) {
+    return token.size() > 1 && token[0] == '-' && IsLetters(token.substr(1));
+}
 FilterSpec ParseFilter(const std::vector<std::string_view>& params, size_t& it) {
     FilterSpec filter;
 
-    if (!params[it].starts_with('-')) {
+    if (IsFilterToken(params[it])) {
         throw WrongArgumentsError();
     }
 
     filter.name = params[it].substr(1);
     ++it;
-    if (filter.name.empty() || !IsLetters(filter.name)) {
-        throw WrongArgumentsError();
-    }
 
-    for (; it < params.size() && !params[it].starts_with('-'); ++it) {
+    for (; it < params.size() && !IsFilterToken(params[it]); ++it) {
         filter.params.push_back(params[it]);
     }
     return filter;
@@ -38,6 +38,7 @@ FilterSpec ParseFilter(const std::vector<std::string_view>& params, size_t& it) 
 Args ParseArgs(const std::vector<std::string_view>& params) {
     if (params.size() < 2u || params[0].starts_with('-') || params[1].starts_with('-')) {
         if (params.size() == 1 && params[0] == "--help") {
+            throw Help();
         }
         throw NoInputOrOutputFiles();
     }

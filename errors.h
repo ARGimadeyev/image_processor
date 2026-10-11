@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 inline std::string ToString(std::string_view s) {
     return static_cast<std::string>(s);
@@ -13,6 +14,7 @@ public:
 };
 
 // File Errors
+
 class FileError : public ImageProcessorError {
 public:
     explicit FileError(std::string_view filename, std::string reason)
@@ -60,9 +62,18 @@ public:
     }
 };
 
+// Фильтры
+
+class UnkdownFilter : public ImageProcessorError {
+public:
+    explicit UnkdownFilter(std::string_view filter) : ImageProcessorError("Неизвестный фильтр: " + ToString(filter)) {
+    }
+};
+
 // Пoддержка
+
 class Help : public ImageProcessorError {
 public:
-    explicit Help() : ImageProcessorError("завозик") {
+    explicit Help() : ImageProcessorError("Как использовать?") {
     }
 };
