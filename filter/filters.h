@@ -54,7 +54,7 @@ private:
     double sigma_;
 };
 
-class GGlassDistortion : public Filter {
+class GlassDistortion : public Filter {
 public:
     void Apply(Image& image) const override;
 };

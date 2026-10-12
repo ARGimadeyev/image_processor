@@ -9,8 +9,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(image_processor
     main.cpp
     data_stream/data_stream.cpp
-    filters/filters.cpp
     image/image.cpp
     parser/parser.cpp
+    filter/filters.cpp
+    filter/filters/crop.cpp
+    filter/filters/edge_detection.cpp
+    filter/filters/glass_distortion.cpp
+    filter/filters/gray_scale.cpp
+    filter/filters/negative.cpp
+    filter/filters/sharpening.cpp
+
 )
 target_compile_options(image_processor PRIVATE -Wall -Wextra -Wpedantic)

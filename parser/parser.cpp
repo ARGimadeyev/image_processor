@@ -18,6 +18,7 @@ bool IsLetters(std::string_view s) {
 bool IsFilterToken(std::string_view token) {
     return token.size() > 1 && token[0] == '-' && IsLetters(token.substr(1));
 }
+
 FilterSpec ParseFilter(const std::vector<std::string_view>& params, size_t& it) {
     FilterSpec filter;
 
