@@ -22,7 +22,7 @@ bool IsFilterToken(std::string_view token) {
 FilterSpec ParseFilter(const std::vector<std::string_view>& params, size_t& it) {
     FilterSpec filter;
 
-    if (IsFilterToken(params[it])) {
+    if (!IsFilterToken(params[it])) {
         throw WrongArgumentsError();
     }
 

@@ -1,5 +1,7 @@
 #include "data_stream.h"
 #include "../errors.h"
+#include "../image/color.h"
+#include "../image/image.h"
 #include <fstream>
 #include <ios>
 #include <limits>

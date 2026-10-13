@@ -38,6 +38,9 @@ bool IsDouble(std::string_view num) {
 }
 
 bool IsUnsigned(std::string_view num) {
+    if (num.empty()) {
+        return false;
+    }
     for (size_t i = 0; i < num.size(); ++i) {
         if (!std::isdigit(num[i])) {
             return false;
@@ -50,11 +53,14 @@ std::unique_ptr<Filter> MakeCrop(const FilterSpec& spec) {
     if (spec.params.size() != 2) {
         throw ParseError("Crop");
     }
-    if (IsUnsigned(spec.params[0]) && IsUnsigned(spec.params[1])) {
+    if (!IsUnsigned(spec.params[0]) || !IsUnsigned(spec.params[1])) {
         throw ParseError("Crop принимает два натуральных числа");
     }
     size_t width = std::stoul(ToString(spec.params[0]));
-    size_t height = std::stoul(ToString(spec.params[0]));
+    size_t height = std::stoul(ToString(spec.params[1]));
+    if (width == 0 || height == 0) {
+        throw ParseError("Crop принимает два натуральных числа");
+    }
     return std::make_unique<Crop>(width, height);
 }
 
