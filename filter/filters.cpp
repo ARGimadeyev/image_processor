@@ -13,7 +13,7 @@ namespace {
 using Creator = std::unique_ptr<Filter> (*)(const FilterSpec&);
 
 template <typename T>
-std::unique_ptr<Filter> MakeWithOutParams(const FilterSpec& spec) {
+std::unique_ptr<Filter> MakeWithoutParams(const FilterSpec& spec) {
     if (!spec.params.empty()) {
         throw ParseError(ToString(spec.name) + " не принимает никаких параметров.");
     }
@@ -74,9 +74,9 @@ std::unique_ptr<Filter> MakeGaussianBlur(const FilterSpec& spec) {
 
 const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
     {"crop", &MakeCrop},
-    {"gs", &MakeWithOutParams<GrayScale>},
-    {"neg", &MakeWithOutParams<Negative>},
-    {"sharp", &MakeWithOutParams<Sharpening>},
+    {"gs", &MakeWithoutParams<GrayScale>},
+    {"neg", &MakeWithoutParams<Negative>},
+    {"sharp", &MakeWithoutParams<Sharpening>},
     {"edge", &MakeEdgeDetection},
     {"blur", &MakeGaussianBlur},
 };

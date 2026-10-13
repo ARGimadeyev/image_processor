@@ -18,7 +18,7 @@ public:
 class FileError : public ImageProcessorError {
 public:
     explicit FileError(std::string_view filename, std::string reason)
-        : ImageProcessorError("Ошибка с файлом: " + ToString(filename) + "." + reason) {
+        : ImageProcessorError("Ошибка с файлом: " + ToString(filename) + ". " + reason) {
     }
 };
 
@@ -32,6 +32,13 @@ class FileReadingError : public FileError {
 public:
     explicit FileReadingError(std::string_view filename)
         : FileError(std::move(filename), "Не удалось прочитать данные") {
+    }
+};
+
+class FileWritingError : public FileError {
+public:
+    explicit FileWritingError(std::string_view filename)
+        : FileError(filename, "Не удалось записать данные") {
     }
 };
 

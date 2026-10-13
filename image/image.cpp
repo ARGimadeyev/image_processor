@@ -11,9 +11,9 @@ size_t Image::Width() const {
 }
 
 Color& Image::At(size_t x, size_t y) {
-    return picture_[x * width_ + y];
+    return picture_[y * width_ + x];
 }
 
 const Color& Image::At(size_t x, size_t y) const {
-    return picture_[x * width_ + y];
+    return picture_[y * width_ + x];
 }
