@@ -14,12 +14,12 @@ inline uint8_t Convert(double color) {
 
 }  // namespace
 
-Color::Color(uint8_t r, uint8_t g, uint8_t b) : B(b / MaxC), G(g / MaxC), R(r / MaxC) {
+Color::Color(uint8_t b, uint8_t g, uint8_t r) : B(b / MaxC), G(g / MaxC), R(r / MaxC) {
 }
 
 std::array<uint8_t, 3> Color::Out() const {
     uint8_t r = Convert(R);
     uint8_t g = Convert(G);
     uint8_t b = Convert(B);
-    return {r, g, b};
+    return {b, g, r};
 }

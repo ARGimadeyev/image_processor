@@ -139,7 +139,7 @@ Image Read(std::string_view path) {
             const uint8_t b = ReadTo<uint8_t>(in, filename);
             const uint8_t g = ReadTo<uint8_t>(in, filename);
             const uint8_t r = ReadTo<uint8_t>(in, filename);
-            image.At(x, y) = Color(r, g, b);
+            image.At(x, y) = Color(b, g, r);
         }
 
         in.ignore(static_cast<std::streamsize>(padding));
@@ -176,7 +176,7 @@ void Write(std::string_view path, const Image& image) {
     const char zeros[KRowAlignment - 1]{};
     for (size_t row = image.Height(); row > 0; --row) {
         for (size_t x = 0; x < image.Width(); ++x) {
-            const auto [R, G, B] = image.At(x, row - 1).Out();
+            const auto [B, G, R] = image.At(x, row - 1).Out();
             WriteTo<uint8_t>(out, B, filename);
             WriteTo<uint8_t>(out, G, filename);
             WriteTo<uint8_t>(out, R, filename);
