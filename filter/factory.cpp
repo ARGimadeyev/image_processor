@@ -74,7 +74,7 @@ std::unique_ptr<Filter> MakeEdgeDetection(const FilterSpec& spec) {
 
 std::unique_ptr<Filter> MakeGaussianBlur(const FilterSpec& spec) {
     if (spec.params.size() != 1 || !IsDouble(spec.params[0]) || spec.params[0][0] == '-') {
-        throw ParseError("Gaussian Detection принимает одно неотрицательное значение double");
+        throw ParseError("Gaussian Blur принимает одно неотрицательное значение double");
     }
     return std::make_unique<GaussianBlur>(std::stod(ToString(spec.params[0])));
 }
