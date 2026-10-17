@@ -25,3 +25,4 @@ build_asan
 *.pdf
 compile_commands.json
 .clangd
+PHOTOS/

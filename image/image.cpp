@@ -1,5 +1,6 @@
 #include "image.h"
 #include <cstddef>
+#include <vector>
 #include "color.h"
 
 size_t Image::Height() const {

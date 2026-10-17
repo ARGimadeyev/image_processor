@@ -1,5 +1,5 @@
 #include "filter.h"
-#include "filters.h"
+#include "factory.h"
 #include "../parser/parser.h"
 #include "../errors.h"
 #include <cctype>
@@ -7,6 +7,7 @@
 #include <string_view>
 #include <unordered_map>
 #include <memory>
+#include <vector>
 
 namespace {
 
@@ -79,12 +80,12 @@ std::unique_ptr<Filter> MakeGaussianBlur(const FilterSpec& spec) {
 }
 
 const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
-    {"crop", &MakeCrop},
-    {"gs", &MakeWithoutParams<GrayScale>},
-    {"neg", &MakeWithoutParams<Negative>},
-    {"sharp", &MakeWithoutParams<Sharpening>},
-    {"edge", &MakeEdgeDetection},
-    {"blur", &MakeGaussianBlur},
+    {"crop", MakeCrop},
+    {"gs", MakeWithoutParams<GrayScale>},
+    {"neg", MakeWithoutParams<Negative>},
+    {"sharp", MakeWithoutParams<Sharpening>},
+    {"edge", MakeEdgeDetection},
+    {"blur", MakeGaussianBlur},
 };
 
 }  // namespace

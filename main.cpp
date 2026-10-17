@@ -5,7 +5,7 @@
 #include "image/image.h"
 #include "parser/parser.h"
 #include "data_stream/data_stream.h"
-#include "filter/filters.h"
+#include "filter/factory.h"
 #include <iostream>
 
 int main(int argc, char** argv) {

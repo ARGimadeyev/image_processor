@@ -12,7 +12,7 @@ add_executable(image_processor
     image/image.cpp
     image/color.cpp
     parser/parser.cpp
-    filter/filters.cpp
+    filter/factory.cpp
     filter/filters/crop.cpp
     filter/filters/edge_detection.cpp
     filter/filters/gaussian_blur.cpp
@@ -20,6 +20,7 @@ add_executable(image_processor
     filter/filters/gray_scale.cpp
     filter/filters/negative.cpp
     filter/filters/sharpening.cpp
+    filter/filter.cpp
 
 )
 target_compile_options(image_processor PRIVATE -Wall -Wextra -Wpedantic)

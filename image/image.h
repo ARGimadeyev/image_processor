@@ -12,6 +12,7 @@ public:
     size_t Width() const;
     Color& At(size_t x, size_t y);
     const Color& At(size_t x, size_t y) const;
+    const Color GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const;
 
 private:
     size_t height_;

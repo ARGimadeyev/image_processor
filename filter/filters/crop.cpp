@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <utility>
-#include "../filters.h"
+#include "../filter.h"
 
 void Crop::Apply(Image& image) const {
     const size_t height = std::min(height_, image.Height());

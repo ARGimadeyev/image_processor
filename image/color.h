@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <array>
+#include <vector>
 
 struct Color {
     double B, G, R;
@@ -11,5 +12,17 @@ struct Color {
     }
     Color(uint8_t b, uint8_t g, uint8_t r);
 
+    Color Norm() const;
+
     std::array<uint8_t, 3> Out() const;
+
+    void operator+=(const Color& c) {
+        B += c.B;
+        G += c.G;
+        R += c.R;
+    }
+
+    Color operator*(const int32_t a) const {
+        return {B * a, G * a, R * a};
+    }
 };
