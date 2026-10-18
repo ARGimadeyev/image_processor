@@ -86,6 +86,7 @@ const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
     {"sharp", MakeWithoutParams<Sharpening>},
     {"edge", MakeEdgeDetection},
     {"blur", MakeGaussianBlur},
+    {"glass", MakeWithoutParams<GlassDistortion>},
 };
 
 }  // namespace

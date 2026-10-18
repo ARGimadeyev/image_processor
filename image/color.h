@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <array>
-#include <vector>
 
 struct Color {
     double B, G, R;
@@ -21,8 +20,10 @@ struct Color {
         G += c.G;
         R += c.R;
     }
-
     Color operator*(const int32_t a) const {
+        return {B * a, G * a, R * a};
+    }
+    Color operator*(const double a) const {
         return {B * a, G * a, R * a};
     }
 };

@@ -1,9 +1,7 @@
 #include "color.h"
-#include "image.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <vector>
 
 namespace {
 constexpr double MaxC = 255.0;
@@ -29,18 +27,4 @@ Color Color::Norm() const {
     double g = std::max(0.0, std::min(G, 1.0));
     double r = std::max(0.0, std::min(R, 1.0));
     return {b, g, r};
-}
-
-const Color Image::GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const {
-    Color sum;
-    for (int64_t i = 0; i < 3; ++i) {
-        const auto new_y = static_cast<size_t>(
-            std::clamp<int64_t>(static_cast<int64_t>(y) + i - 1, 0, static_cast<int64_t>(Height()) - 1));
-        for (int64_t j = 0; j < 3; ++j) {
-            const auto new_x = static_cast<size_t>(
-                std::clamp<int64_t>(static_cast<int64_t>(x) + j - 1, 0, static_cast<int64_t>(Width()) - 1));
-            sum += At(new_x, new_y) * matrix[i][j];
-        }
-    }
-    return sum;
 }

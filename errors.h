@@ -37,8 +37,7 @@ public:
 
 class FileWritingError : public FileError {
 public:
-    explicit FileWritingError(std::string_view filename)
-        : FileError(filename, "Не удалось записать данные") {
+    explicit FileWritingError(std::string_view filename) : FileError(filename, "Не удалось записать данные") {
     }
 };
 
