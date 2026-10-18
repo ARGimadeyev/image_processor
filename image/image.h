@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 #include "color.h"
 
@@ -20,6 +21,7 @@ public:
 
     const Color GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const;
 
+    const Color AverageMatrix(int64_t x0, int64_t y0, int64_t mul) const;
     ImageView CreateRegion(size_t x, size_t y, size_t height, size_t width);
 
 private:

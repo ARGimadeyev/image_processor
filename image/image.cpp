@@ -54,7 +54,24 @@ const Color ImageView::GetMatrix(const std::vector<std::vector<int32_t>>& matrix
         }
     }
     return sum;
-};
+}
+
+const Color Image::AverageMatrix(int64_t x0, int64_t y0, int64_t mul) const {
+    Color average;
+    for (int64_t dx = -mul; dx <= mul; ++dx) {
+        for (int64_t dy = -mul; dy <= mul; ++dy) {
+            const int64_t x = x0 + dx;
+            const int64_t y = y0 + dy;
+            if (x < 0 || x >= static_cast<int64_t>(Width()) || y < 0 || y >= static_cast<int64_t>(Height())) {
+                average += Color(1.0, 1.0, 1.0);
+            } else {
+                average += At(static_cast<size_t>(x), static_cast<size_t>(y));
+            }
+        }
+    }
+    average = average * (1.0 / static_cast<double>((2 * mul + 1) * (2 * mul + 1)));
+    return average;
+}
 
 size_t Clamp(size_t coordinate, int64_t offset, size_t length) {
     const int64_t cord = static_cast<int64_t>(coordinate) + offset;
