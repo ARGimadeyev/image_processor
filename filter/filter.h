@@ -72,5 +72,11 @@ private:
 
 class GlassDistortion : public Filter {
 public:
+    GlassDistortion(int64_t radius, double blur) : radius_(radius), blur_(blur) {
+    }
     void Apply(Image& image) const override;
+
+private:
+    int64_t radius_;
+    double blur_;
 };

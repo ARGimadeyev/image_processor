@@ -7,22 +7,17 @@
 #include <utility>
 
 namespace {
-// constexpr double Blur = 6;
-constexpr double BlurBack = 2;
-constexpr int64_t Radius = 12;
-constexpr int64_t Mul = 1;
-constexpr int64_t HorizontalStep = 2 * Radius + 4;
-constexpr int64_t VerticalStep = static_cast<int64_t>(HorizontalStep * 0.8660254037844386 + 0.5);
+constexpr int64_t Mul = 2;
 
-void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image) {
-    size_t x_begin = Clamp(x0, -Radius, image.Width());
-    size_t x_end = Clamp(x0, Radius, image.Width());
+void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image, int64_t radius) {
+    size_t x_begin = Clamp(x0, -radius, image.Width());
+    size_t x_end = Clamp(x0, radius, image.Width());
     for (size_t x = x_begin; x <= x_end; ++x) {
 
-        size_t y_begin = Clamp(y0, -Radius, image.Height());
-        size_t y_end = Clamp(y0, Radius, image.Height());
+        size_t y_begin = Clamp(y0, -radius, image.Height());
+        size_t y_end = Clamp(y0, radius, image.Height());
         for (size_t y = y_begin; y <= y_end; ++y) {
-            if (Radius * Radius < (x - x0) * (x - x0) + (y - y0) * (y - y0)) {
+            if (static_cast<size_t>(radius * radius) < (x - x0) * (x - x0) + (y - y0) * (y - y0)) {
                 continue;
             }
             const int64_t diff_x = (x0 - static_cast<int64_t>(x)) * (2 * Mul + 1);
@@ -34,24 +29,22 @@ void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image) 
 }  // namespace
 
 void GlassDistortion::Apply(Image& image) const {
-    if (image.Width() == 0 || image.Height() == 0) {
-        return;
-    }
+    const int64_t hstep = 2 * radius_ + 2;
+    const int64_t vstep = static_cast<int64_t>(static_cast<double>(hstep) * 0.8660254037844386 + 0.5);
     // GaussianBlur{Blur}.Apply(image);
     Image result = image;
-    // GaussianBlur{Blur + BlurBack}.Apply(image);
+    GaussianBlur{blur_ * 2}.Apply(result);
 
     std::mt19937 generator(1);
     std::uniform_int_distribution<int64_t> jitter(-4, 4);
-    for (int64_t row = 0; row * VerticalStep < static_cast<int64_t>(image.Height()) + Radius; ++row) {
-        const int64_t shift = row % 2 == 0 ? 0 : HorizontalStep / 2;
-        for (int64_t column = 0; column * HorizontalStep + shift < static_cast<int64_t>(image.Width()) + Radius;
-             ++column) {
-            const int64_t center_x = std::max<int64_t>(0, column * HorizontalStep + shift + jitter(generator));
-            const int64_t center_y = std::max<int64_t>(0, row * VerticalStep + jitter(generator));
-            InvertCircle(center_x, center_y, result, image);
+    for (int64_t row = 0; row * vstep < (static_cast<int64_t>(image.Height()) + radius_); ++row) {
+        const int64_t shift = row % 2 == 0 ? 0 : hstep / 2;
+        for (int64_t column = 0; column * hstep + shift < static_cast<int64_t>(image.Width()) + radius_; ++column) {
+            const int64_t center_x = std::max<int64_t>(0, column * hstep + shift + jitter(generator));
+            const int64_t center_y = std::max<int64_t>(0, row * vstep + jitter(generator));
+            InvertCircle(center_x, center_y, result, image, radius_);
         }
     }
     image = std::move(result);
-    GaussianBlur{BlurBack}.Apply(image);
+    GaussianBlur{blur_}.Apply(image);
 }

@@ -78,7 +78,13 @@ std::unique_ptr<Filter> MakeGaussianBlur(const FilterSpec& spec) {
     }
     return std::make_unique<GaussianBlur>(std::stod(ToString(spec.params[0])));
 }
-
+std::unique_ptr<Filter> MakeGlassDistortion(const FilterSpec& spec) {
+    if (spec.params.size() != 2 || !IsUnsigned(spec.params[0]) || !IsDouble(spec.params[1]) ||
+        spec.params[1][0] == '-') {
+        throw ParseError("Glass Distortion принимает радиус и блюр");
+    }
+    return std::make_unique<GlassDistortion>(std::stoll(ToString(spec.params[0])), std::stod(ToString(spec.params[1])));
+}
 const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
     {"crop", MakeCrop},
     {"gs", MakeWithoutParams<GrayScale>},
@@ -86,7 +92,7 @@ const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
     {"sharp", MakeWithoutParams<Sharpening>},
     {"edge", MakeEdgeDetection},
     {"blur", MakeGaussianBlur},
-    {"glass", MakeWithoutParams<GlassDistortion>},
+    {"glass", MakeGlassDistortion},
 };
 
 }  // namespace
