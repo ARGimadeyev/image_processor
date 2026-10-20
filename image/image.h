@@ -1,6 +1,8 @@
 #pragma once
 
+#include <algorithm>
 #include <cstddef>
+#include <concepts>
 #include <cstdint>
 #include <vector>
 #include "color.h"
@@ -57,4 +59,11 @@ private:
     size_t width_;
 };
 
-size_t Clamp(size_t cord, int64_t offset, size_t len);
+template <class T = std::size_t>
+    requires std::integral<T>
+T Clamp(size_t coordinate, int64_t offset, size_t length) {
+    const int64_t cord = static_cast<int64_t>(coordinate) + offset;
+    const int64_t len = static_cast<int64_t>(length);
+    const int64_t answer = std::clamp<int64_t>(cord, 0, len - 1);
+    return static_cast<T>(answer);
+}

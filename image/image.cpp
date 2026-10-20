@@ -1,5 +1,4 @@
 #include "image.h"
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <vector>
@@ -23,9 +22,9 @@ const Color& Image::At(size_t x, size_t y) const {
 const Color Image::GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const {
     Color sum;
     for (int64_t i = 0; i < 3; ++i) {
-        const size_t new_y = Clamp(y, -(i + 1), Height());
+        const size_t new_y = Clamp<size_t>(y, i - 1, Height());
         for (int64_t j = 0; j < 3; ++j) {
-            const size_t new_x = Clamp(x, j - 1, Width());
+            const size_t new_x = Clamp<size_t>(x, j - 1, Width());
             sum += At(new_x, new_y) * matrix[i][j];
         }
     }
@@ -46,9 +45,9 @@ const Color& ImageView::At(size_t x, size_t y) const {
 const Color ImageView::GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const {
     Color sum;
     for (int64_t i = 0; i < 3; ++i) {
-        const size_t new_y = Clamp(y, -(i + 1), Height());
+        const size_t new_y = Clamp<size_t>(y, i - 1, Height());
         for (int64_t j = 0; j < 3; ++j) {
-            const size_t new_x = Clamp(x, j - 1, Width());
+            const size_t new_x = Clamp<size_t>(x, j - 1, Width());
             sum += At(new_x, new_y) * matrix[i][j];
         }
     }
@@ -70,11 +69,4 @@ const Color Image::AverageMatrix(int64_t x0, int64_t y0, int64_t mul) const {
     }
     average = average * (1.0 / static_cast<double>((2 * mul + 1) * (2 * mul + 1)));
     return average;
-}
-
-size_t Clamp(size_t coordinate, int64_t offset, size_t length) {
-    const int64_t cord = static_cast<int64_t>(coordinate) + offset;
-    const int64_t len = static_cast<int64_t>(length);
-    int64_t answer = std::clamp<int64_t>(cord, 0, len - 1);
-    return static_cast<size_t>(answer);
 }

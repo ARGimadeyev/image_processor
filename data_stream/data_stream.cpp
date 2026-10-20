@@ -3,6 +3,7 @@
 #include <bit>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <fstream>
 #include <ios>
 #include <istream>
@@ -10,6 +11,7 @@
 #include <ostream>
 #include <string>
 #include <string_view>
+#include <system_error>
 
 namespace {
 constexpr uint16_t KSignature = 0x4D42;  // "BM"
@@ -131,6 +133,16 @@ Image Read(std::string_view path) {
     in.ignore(gap);
     if (in.gcount() != gap || !in) {
         throw FileReadingError(filename);
+    }
+
+    std::error_code size_error;
+    const auto file_size = std::filesystem::file_size(ToString(path), size_error);
+    if (size_error) {
+        throw FileReadingError(filename);
+    }
+    const uint64_t pixel_bytes = (row_bytes + padding) * header.Height();
+    if (file_size < header.PixelOffset() || pixel_bytes > file_size - header.PixelOffset()) {
+        throw FileInvalidDimensionsError(filename);
     }
 
     Image image(header.Height(), header.Width());

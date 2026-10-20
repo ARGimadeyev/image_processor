@@ -1,4 +1,5 @@
 #include "../filter.h"
+#include "../../image/image.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -10,18 +11,18 @@ namespace {
 constexpr int64_t Mul = 2;
 
 void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image, int64_t radius) {
-    size_t x_begin = Clamp(x0, -radius, image.Width());
-    size_t x_end = Clamp(x0, radius, image.Width());
-    for (size_t x = x_begin; x <= x_end; ++x) {
+    auto x_begin = Clamp<int64_t>(x0, -radius, image.Width());
+    auto x_end = Clamp<int64_t>(x0, radius, image.Width());
+    for (auto x = x_begin; x <= x_end; ++x) {
 
-        size_t y_begin = Clamp(y0, -radius, image.Height());
-        size_t y_end = Clamp(y0, radius, image.Height());
-        for (size_t y = y_begin; y <= y_end; ++y) {
-            if (static_cast<size_t>(radius * radius) < (x - x0) * (x - x0) + (y - y0) * (y - y0)) {
+        auto y_begin = Clamp<int64_t>(y0, -radius, image.Height());
+        auto y_end = Clamp<int64_t>(y0, radius, image.Height());
+        for (auto y = y_begin; y <= y_end; ++y) {
+            if (radius * radius < (x - x0) * (x - x0) + (y - y0) * (y - y0)) {
                 continue;
             }
-            const int64_t diff_x = (x0 - static_cast<int64_t>(x)) * (2 * Mul + 1);
-            const int64_t diff_y = (y0 - static_cast<int64_t>(y)) * (2 * Mul + 1);
+            const auto diff_x = (x0 - x) * (2 * Mul + 1);
+            const auto diff_y = (y0 - y) * (2 * Mul + 1);
             new_image.At(x, y) = image.AverageMatrix(x0 + diff_x, y0 + diff_y, Mul);
         }
     }
@@ -40,8 +41,8 @@ void GlassDistortion::Apply(Image& image) const {
     for (int64_t row = 0; row * vstep < (static_cast<int64_t>(image.Height()) + radius_); ++row) {
         const int64_t shift = row % 2 == 0 ? 0 : hstep / 2;
         for (int64_t column = 0; column * hstep + shift < static_cast<int64_t>(image.Width()) + radius_; ++column) {
-            const int64_t center_x = std::max<int64_t>(0, column * hstep + shift + jitter(generator));
-            const int64_t center_y = std::max<int64_t>(0, row * vstep + jitter(generator));
+            const auto center_x = std::max<int64_t>(0, column * hstep + shift + jitter(generator));
+            const auto center_y = std::max<int64_t>(0, row * vstep + jitter(generator));
             InvertCircle(center_x, center_y, result, image, radius_);
         }
     }
