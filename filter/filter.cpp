@@ -1,4 +1,6 @@
 #include "filter.h"
+#include <cstddef>
+#include <utility>
 
 void PixelwiseFilter::Apply(Image& image) const {
     for (size_t y = 0; y < image.Height(); ++y) {

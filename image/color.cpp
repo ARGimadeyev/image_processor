@@ -1,7 +1,6 @@
 #include "color.h"
 #include <algorithm>
 #include <cmath>
-#include <cstdint>
 
 namespace {
 constexpr double MaxC = 255.0;

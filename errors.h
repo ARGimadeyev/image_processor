@@ -24,14 +24,14 @@ public:
 
 class FileOpeningError : public FileError {
 public:
-    explicit FileOpeningError(std::string_view filename) : FileError(std::move(filename), "Не удалось открыть файл") {
+    explicit FileOpeningError(std::string_view filename) : FileError(filename, "Не удалось открыть файл") {
     }
 };
 
 class FileReadingError : public FileError {
 public:
     explicit FileReadingError(std::string_view filename)
-        : FileError(std::move(filename), "Не удалось прочитать данные") {
+        : FileError(filename, "Не удалось прочитать данные") {
     }
 };
 
@@ -44,7 +44,7 @@ public:
 class FileInvalidSignature : public FileError {
 public:
     explicit FileInvalidSignature(std::string_view filename)
-        : FileError(std::move(filename), "Неподходящая разметка файла (используйте .bmp)") {
+        : FileError(filename, "Неподходящая разметка файла (используйте .bmp)") {
     }
 };
 
@@ -70,9 +70,9 @@ public:
 
 // Фильтры
 
-class UnkdownFilter : public ImageProcessorError {
+class UnkdownFilter : public ParseError {
 public:
-    explicit UnkdownFilter(std::string_view filter) : ImageProcessorError("Неизвестный фильтр: " + ToString(filter)) {
+    explicit UnkdownFilter(std::string_view filter) : ParseError("Неизвестный фильтр: " + ToString(filter)) {
     }
 };
 

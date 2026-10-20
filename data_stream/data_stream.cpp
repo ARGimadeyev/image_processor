@@ -1,12 +1,15 @@
 #include "data_stream.h"
 #include "../errors.h"
-#include "../image/color.h"
-#include "../image/image.h"
+#include <bit>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
 #include <ios>
+#include <istream>
 #include <limits>
+#include <ostream>
+#include <string>
 #include <string_view>
-#include <bit>
 
 namespace {
 constexpr uint16_t KSignature = 0x4D42;  // "BM"

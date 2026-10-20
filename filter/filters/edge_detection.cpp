@@ -1,6 +1,7 @@
 #include "../filter.h"
-#include "../../image/color.h"
 #include <cstddef>
+#include <cstdint>
+#include <vector>
 
 namespace {
 const std::vector<std::vector<int32_t>> MATRIX{

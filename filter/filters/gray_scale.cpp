@@ -1,5 +1,4 @@
 #include "../filter.h"
-#include "../../image/color.h"
 
 namespace {
 

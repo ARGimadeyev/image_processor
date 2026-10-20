@@ -1,6 +1,6 @@
 #include "../filter.h"
-#include "../../image/image.h"
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 

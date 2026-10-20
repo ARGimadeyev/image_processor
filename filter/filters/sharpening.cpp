@@ -1,4 +1,6 @@
 #include <cstddef>
+#include <cstdint>
+#include <vector>
 #include "../filter.h"
 
 namespace {

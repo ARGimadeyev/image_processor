@@ -1,9 +1,8 @@
 #include "image.h"
-#include <cstddef>
-#include <vector>
-#include "color.h"
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
+#include <vector>
 
 size_t Image::Height() const {
     return height_;

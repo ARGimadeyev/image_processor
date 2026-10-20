@@ -1,4 +1,5 @@
 #include <exception>
+#include <iostream>
 #include <string_view>
 #include <vector>
 #include "errors.h"
@@ -6,7 +7,6 @@
 #include "parser/parser.h"
 #include "data_stream/data_stream.h"
 #include "filter/factory.h"
-#include <iostream>
 
 int main(int argc, char** argv) {
     try {
