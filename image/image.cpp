@@ -31,29 +31,6 @@ const Color Image::GetMatrix(const std::vector<std::vector<int32_t>>& matrix, si
     return sum;
 }
 
-ImageView Image::CreateRegion(size_t x, size_t y, size_t height, size_t width) {
-    return ImageView(*this, x, y, height, width);
-}
-Color& ImageView::At(size_t x, size_t y) {
-    return parent_.At(x + x_, y + y_);
-}
-
-const Color& ImageView::At(size_t x, size_t y) const {
-    return parent_.At(x + x_, y + y_);
-}
-
-const Color ImageView::GetMatrix(const std::vector<std::vector<int32_t>>& matrix, size_t x, size_t y) const {
-    Color sum;
-    for (int64_t i = 0; i < 3; ++i) {
-        const size_t new_y = Clamp<size_t>(y, i - 1, Height());
-        for (int64_t j = 0; j < 3; ++j) {
-            const size_t new_x = Clamp<size_t>(x, j - 1, Width());
-            sum += At(new_x, new_y) * matrix[i][j];
-        }
-    }
-    return sum;
-}
-
 const Color Image::AverageMatrix(int64_t x0, int64_t y0, int64_t mul) const {
     Color average;
     for (int64_t dx = -mul; dx <= mul; ++dx) {
