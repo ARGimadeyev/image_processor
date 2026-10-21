@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(image_processor
-    main.cpp
+set(SOURCES
     data_stream/data_stream.cpp
     image/image.cpp
     image/color.cpp
@@ -21,6 +20,15 @@ add_executable(image_processor
     filter/filters/negative.cpp
     filter/filters/sharpening.cpp
     filter/filter.cpp
-
 )
+add_executable(image_processor main.cpp ${SOURCES})
 target_compile_options(image_processor PRIVATE -Wall -Wextra -Wpedantic)
+
+include(CTest)
+if(BUILD_TESTING)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    add_test(NAME image_processor_tests
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/test_script/test_image_processor.py
+                $<TARGET_FILE:image_processor>)
+    set_tests_properties(image_processor_tests PROPERTIES TIMEOUT 180)
+endif()
