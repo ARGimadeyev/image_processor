@@ -1,13 +1,11 @@
 #include "factory.h"
 #include "../errors.h"
-#include <charconv>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
 #include <memory>
 #include <string_view>
-#include <system_error>
 #include <unordered_map>
 
 namespace {
@@ -28,23 +26,41 @@ bool ParseUnsigned(std::string_view text, T& value) {
     if (text.empty() || text[0] < '0' || text[0] > '9') {
         return false;
     }
-    const auto [end, error] = std::from_chars(text.data(), text.data() + text.size(), value);
-    return error == std::errc{} && end == text.data() + text.size();
+    try {
+        size_t end = 0;
+        const auto number = std::stoull(ToString(text), &end);
+        if (end != text.size() || number > std::numeric_limits<T>::max()) {
+            return false;
+        }
+        value = static_cast<T>(number);
+        return true;
+    } catch (const std::invalid_argument&) {
+        return false;
+    } catch (const std::out_of_range&) {
+        return false;
+    }
 }
 
 bool ParseDouble(std::string_view text, double& value) {
-    if (text.empty()) {
+    if (text.empty() || text[0] == '+' || text.find_first_of(" \t\n\r\f\vxX") != std::string_view::npos) {
         return false;
     }
-    const auto [end, error] = std::from_chars(text.data(), text.data() + text.size(), value);
-    return error == std::errc{} && end == text.data() + text.size() && std::isfinite(value);
+    try {
+        size_t end = 0;
+        value = std::stod(ToString(text), &end);
+        return end == text.size() && std::isfinite(value);
+    } catch (const std::invalid_argument&) {
+        return false;
+    } catch (const std::out_of_range&) {
+        return false;
+    }
 }
 
 std::unique_ptr<Filter> MakeCrop(const FilterSpec& spec) {
     size_t width = 0;
     size_t height = 0;
-    if (spec.params.size() != 2 || !ParseUnsigned(spec.params[0], width) ||
-        !ParseUnsigned(spec.params[1], height) || width == 0 || height == 0) {
+    if (spec.params.size() != 2 || !ParseUnsigned(spec.params[0], width) || !ParseUnsigned(spec.params[1], height) ||
+        width == 0 || height == 0) {
         throw ParseError("Crop принимает два натуральных числа");
     }
     return std::make_unique<Crop>(width, height);
@@ -63,23 +79,27 @@ std::unique_ptr<Filter> MakeGaussianBlur(const FilterSpec& spec) {
     if (spec.params.size() != 1 || !ParseDouble(spec.params[0], sigma) || sigma < 0) {
         throw ParseError("Gaussian Blur принимает одно неотрицательное значение double");
     }
-    if (sigma > static_cast<double>(std::numeric_limits<int64_t>::max() / 8)) {
+    const int32_t num = 8;
+    if (sigma > static_cast<double>(std::numeric_limits<int64_t>::max() / num)) {
         throw ParseError("Gaussian Blur: значение слишком велико");
     }
     return std::make_unique<GaussianBlur>(sigma);
 }
+
 std::unique_ptr<Filter> MakeGlassDistortion(const FilterSpec& spec) {
     int64_t radius = 0;
     double blur = 0;
-    if (spec.params.size() != 2 || !ParseUnsigned(spec.params[0], radius) ||
-        !ParseDouble(spec.params[1], blur) || blur < 0) {
+    if (spec.params.size() != 2 || !ParseUnsigned(spec.params[0], radius) || !ParseDouble(spec.params[1], blur) ||
+        blur < 0) {
         throw ParseError("Glass Distortion принимает радиус и блюр");
     }
-    if (radius > MaxGlassRadius || blur > static_cast<double>(std::numeric_limits<int64_t>::max() / 16)) {
+    const int32_t num = 16;
+    if (radius > MaxGlassRadius || blur > static_cast<double>(std::numeric_limits<int64_t>::max() / num)) {
         throw ParseError("Glass Distortion: радиус или блюр слишком велики");
     }
     return std::make_unique<GlassDistortion>(radius, blur);
 }
+
 const std::unordered_map<std::string_view, Creator> FILTER_CREATOR = {
     {"crop", MakeCrop},
     {"gs", MakeWithoutParams<GrayScale>},

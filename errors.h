@@ -48,6 +48,13 @@ public:
     }
 };
 
+class FileInvalidDimensionsError : public FileError {
+public:
+    explicit FileInvalidDimensionsError(std::string_view filename)
+        : FileError(filename, "Размеры изображения не соответствуют данным BMP") {
+    }
+};
+
 // Parse Errors
 
 class ParseError : public ImageProcessorError {
