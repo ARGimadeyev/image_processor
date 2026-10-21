@@ -47,7 +47,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: beets](docs/images/beets-original.png) | ![Обрезка](docs/images/beets-filtered.png) |
+| ![Оригинал: beets](test_script/mydata/beets.bmp) | ![Обрезка](test_script/filtred/beets.bmp) |
 
 ```bash
 ./image_processor mydata/beets.bmp filtred/beets.bmp -crop 1500 1000
@@ -57,7 +57,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: china](docs/images/china-original.png) | ![Негатив](docs/images/china-filtered.png) |
+| ![Оригинал: china](test_script/mydata/china.bmp) | ![Негатив](test_script/filtred/china.bmp) |
 
 ```bash
 ./image_processor mydata/china.bmp filtred/china.bmp -neg
@@ -67,7 +67,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: cucumber](docs/images/cucumber-original.png) | ![Выделение границ](docs/images/cucumber-filtered.png) |
+| ![Оригинал: cucumber](test_script/mydata/cucumber.bmp) | ![Выделение границ](test_script/filtred/cucumber.bmp) |
 
 ```bash
 ./image_processor mydata/cucumber.bmp filtred/cucumber.bmp -edge 0.07
@@ -77,7 +77,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: flower](docs/images/flower-original.png) | ![Повышение резкости (три применения)](docs/images/flower-filtered.png) |
+| ![Оригинал: flower](test_script/mydata/flower.bmp) | ![Повышение резкости (три применения)](test_script/filtred/flower.bmp) |
 
 ```bash
 ./image_processor mydata/flower.bmp filtred/flower.bmp -sharp -sharp -sharp
@@ -87,7 +87,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: flowers](docs/images/flowers-original.png) | ![Рельефное стекло](docs/images/flowers-filtered.png) |
+| ![Оригинал: flowers](test_script/mydata/flowers.bmp) | ![Рельефное стекло](test_script/filtred/flowers.bmp) |
 
 ```bash
 ./image_processor mydata/flowers.bmp filtred/flowers.bmp -glass 17 2.2
@@ -97,7 +97,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: table_with_fr_and_veg](docs/images/table_with_fr_and_veg-original.png) | ![Оттенки серого](docs/images/table_with_fr_and_veg-filtered.png) |
+| ![Оригинал: table_with_fr_and_veg](test_script/mydata/table_with_fr_and_veg.bmp) | ![Оттенки серого](test_script/filtred/table_with_fr_and_veg.bmp) |
 
 ```bash
 ./image_processor mydata/table_with_fr_and_veg.bmp filtred/table_with_fr_and_veg.bmp -gs
@@ -107,7 +107,7 @@ cmake --build build -j 2
 
 | Оригинал | Результат |
 | --- | --- |
-| ![Оригинал: table_with_vegetables](docs/images/table_with_vegetables-original.png) | ![Размытие по Гауссу](docs/images/table_with_vegetables-filtered.png) |
+| ![Оригинал: table_with_vegetables](test_script/mydata/table_with_vegetables.bmp) | ![Размытие по Гауссу](test_script/filtred/table_with_vegetables.bmp) |
 
 ```bash
 ./image_processor mydata/table_with_vegetables.bmp filtred/table_with_vegetables.bmp -blur 13
