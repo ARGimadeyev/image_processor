@@ -2,14 +2,13 @@
 #include "../../image/image.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <cstdint>
 #include <random>
 #include <utility>
 
 namespace {
 constexpr int64_t Mul = 2;
-
+constexpr double Per = 0.8660254037844386;  // sqrt(3) / 2
 void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image, int64_t radius) {
     auto x_begin = Clamp<int64_t>(x0, -radius, image.Width());
     auto x_end = Clamp<int64_t>(x0, radius, image.Width());
@@ -31,7 +30,7 @@ void InvertCircle(int64_t x0, int64_t y0, Image& new_image, const Image& image, 
 
 void GlassDistortion::Apply(Image& image) const {
     const int64_t hstep = 2 * radius_ + 2;
-    const int64_t vstep = static_cast<int64_t>(static_cast<double>(hstep) * 0.8660254037844386 + 0.5);
+    const int64_t vstep = static_cast<int64_t>(static_cast<double>(hstep) * Per + 0.5);
     // GaussianBlur{Blur}.Apply(image);
     Image result = image;
     GaussianBlur{blur_ * 2}.Apply(result);
